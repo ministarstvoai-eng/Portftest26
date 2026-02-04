@@ -7,11 +7,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#0b0b0c;
+      --bg:#070709;
       --text:#f2f2f2;
       --muted:rgba(242,242,242,.70);
 
@@ -28,6 +28,10 @@
       --aGlow2: rgba(120,255,210,.20);
       --aGlow3: rgba(120,170,255,.08);
       --aGlow4: rgba(120,170,255,.14);
+
+      /* Header glass */
+      --glass: rgba(16,16,20,.62);
+      --glass2: rgba(255,255,255,.06);
     }
 
     *{ box-sizing:border-box; }
@@ -37,35 +41,98 @@
       font-family:"Manrope", Arial, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.06), transparent 60%),
-        radial-gradient(900px 500px at 10% 18%, rgba(120,90,255,.08), transparent 55%),
-        radial-gradient(900px 500px at 90% 28%, rgba(0,200,255,.06), transparent 55%),
+        /* NEW: subtle premium radial gradients */
+        radial-gradient(900px 500px at 15% -5%, rgba(120,90,255,.13), transparent 60%),
+        radial-gradient(800px 480px at 85% 10%, rgba(0,200,255,.10), transparent 58%),
+        radial-gradient(900px 600px at 50% 110%, rgba(255,255,255,.05), transparent 60%),
         var(--bg);
     }
 
     .wrap{
       max-width:1240px;
       margin:0 auto;
-      padding:22px 18px 86px;
+      padding: 0 18px 86px; /* top padding moved to sticky header spacer */
     }
 
-    /* Top */
+    /* =========================
+       Sticky header (floating)
+       ========================= */
+    .sticky{
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      padding: 14px 0 12px;
+      background: linear-gradient(180deg, rgba(7,7,9,.90), rgba(7,7,9,.55) 70%, rgba(7,7,9,0));
+      backdrop-filter: blur(10px);
+    }
+
+    .headerCard{
+      max-width:1240px;
+      margin: 0 auto;
+      padding: 14px 14px 12px;
+      border-radius: 18px;
+      background: var(--glass);
+      outline: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      backdrop-filter: blur(14px);
+      transform-origin: top center;
+      animation: headerIn .42s ease-out both;
+    }
+
+    @keyframes headerIn{
+      from{ opacity:0; transform: translateY(-10px) scale(.99); }
+      to  { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* top row */
     .top{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      margin-bottom:14px;
+    }
+
+    .titleWrap{
+      flex:1;
+      text-align:center;
+      min-width: 160px;
     }
 
     .title{
-      flex:1;
-      text-align:center;
-      font-size:28px;
-      font-weight:700;
-      margin:6px 0;
-      letter-spacing:.2px;
-      text-shadow:0 10px 40px rgba(0,0,0,.35);
+      font-size: 34px;          /* bigger */
+      font-weight: 800;         /* bolder */
+      letter-spacing: .5px;
+      margin: 4px 0 6px;
+      text-shadow: 0 12px 50px rgba(0,0,0,.35);
+      animation: titleFade .6s ease-out both;
+      animation-delay: .05s;
+    }
+
+    @keyframes titleFade{
+      from{ opacity:0; transform: translateY(-6px); }
+      to  { opacity:1; transform: translateY(0); }
+    }
+
+    /* Visual marker under title */
+    .marker{
+      width: min(340px, 70%);
+      height: 2px;
+      margin: 0 auto 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,0),
+        rgba(120,255,210,.55),
+        rgba(120,170,255,.35),
+        rgba(255,255,255,0)
+      );
+      box-shadow: 0 0 18px rgba(120,255,210,.10);
+      opacity: .95;
+      animation: markerGlow 2.6s ease-in-out infinite;
+    }
+
+    @keyframes markerGlow{
+      0%,100%{ opacity:.65; }
+      50%{ opacity:1; }
     }
 
     .actions{
@@ -79,114 +146,137 @@
     .btn{
       border:0;
       cursor:pointer;
-      background:rgba(255,255,255,.10);
       color:#fff;
-      padding:10px 12px;
-      border-radius:12px;
-      font-size:12px;
+      padding:11px 13px;
+      border-radius:14px;
+      font-size:13px;
+      font-weight: 650;
       display:flex;
       gap:8px;
       align-items:center;
       white-space:nowrap;
-      outline:1px solid rgba(255,255,255,.12);
-      transition:transform .18s ease, background .18s ease, outline-color .18s ease;
+      background: rgba(255,255,255,.10);
+      outline: 1px solid rgba(255,255,255,.12);
+      transition: transform .18s ease, background .18s ease, outline-color .18s ease;
       user-select:none;
     }
     .btn:hover{
-      transform:translateY(-1px);
-      background:rgba(255,255,255,.14);
-      outline-color:rgba(255,255,255,.20);
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.14);
+      outline-color: rgba(255,255,255,.20);
     }
-    .btn:active{ transform:translateY(0) scale(.99); }
-    .btn.on{ background:rgba(255,255,255,.16); }
+    .btn:active{ transform: translateY(0) scale(.99); }
+    .btn.on{ background: rgba(255,255,255,.16); }
 
-    /* Filters */
+    /* Filters - bigger & more visible */
     .filters{
       display:flex;
-      gap:8px;
+      gap:10px;
       flex-wrap:wrap;
       justify-content:center;
-      margin:6px 0 18px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
     }
     .chip{
       border:0;
       cursor:pointer;
-      padding:8px 12px;
+      padding: 10px 14px;
       border-radius:999px;
-      font-size:12px;
-      color:rgba(255,255,255,.92);
-      background:rgba(255,255,255,.08);
-      outline:1px solid rgba(255,255,255,.10);
-      transition:background .18s ease, transform .18s ease, outline-color .18s ease;
+      font-size: 14px;         /* bigger */
+      font-weight: 700;        /* bolder */
+      letter-spacing: .15px;
+      color: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.08);
+      outline: 1px solid rgba(255,255,255,.12);
+      transition: background .18s ease, transform .18s ease, outline-color .18s ease, box-shadow .18s ease;
       user-select:none;
+      display:flex;
+      align-items:center;
+      gap:8px;
     }
     .chip:hover{
-      background:rgba(255,255,255,.12);
-      outline-color:rgba(255,255,255,.16);
-      transform:translateY(-1px);
+      background: rgba(255,255,255,.12);
+      outline-color: rgba(255,255,255,.18);
+      transform: translateY(-1px);
     }
+    /* Option B: active filter POPS */
     .chip.active{
-      background:rgba(255,255,255,.18);
-      outline-color:rgba(255,255,255,.24);
+      background: rgba(255,255,255,.18);
+      outline-color: rgba(255,255,255,.28);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 0 22px rgba(120,255,210,.10);
+      transform: translateY(-1px);
+    }
+    .chip.bump{
+      animation: chipBump .22s ease-out;
+    }
+    @keyframes chipBump{
+      0%{ transform: translateY(-1px) scale(1); }
+      45%{ transform: translateY(-2px) scale(1.05); }
+      100%{ transform: translateY(-1px) scale(1); }
     }
 
-    /* Grid */
+    /* spacer between header and grid */
+    .spacer{ height: 14px; }
+
+    /* =========================
+       Grid
+       ========================= */
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
-      gap:16px;
-      overflow:visible;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      overflow: visible;
     }
-    .grid.isFew{ max-width:980px; margin:0 auto; }
-
-    .grid:hover .card{ opacity:.82; filter:saturate(.98); }
+    .grid.isFew{ max-width: 980px; margin: 0 auto; }
+    .grid:hover .card{ opacity: .82; filter: saturate(.98); }
 
     .card{
-      position:relative;
-      height:260px;
-      border-radius:var(--r);
-      overflow:visible;
-      cursor:pointer;
-      transition:opacity .18s ease;
-      animation:fadeUp .28s ease both;
+      position: relative;
+      height: 270px; /* slightly bigger thumbnails */
+      border-radius: var(--r);
+      overflow: visible;
+      cursor: pointer;
+      transition: opacity .18s ease;
+      animation: fadeUp .28s ease both;
     }
     @keyframes fadeUp{
       from{ opacity:0; transform:translateY(10px); }
       to  { opacity:1; transform:translateY(0); }
     }
-
     @media (min-width: 980px){
-      .card:nth-child(6n){ height:300px; }
+      .card:nth-child(6n){ height: 310px; }
     }
 
     .card-inner{
-      position:relative;
-      width:100%;
-      height:100%;
-      border-radius:var(--r);
-      overflow:hidden;
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      outline:1px solid var(--border);
-      transition:transform .22s ease, box-shadow .22s ease, outline-color .22s ease;
-      will-change:transform;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: var(--r);
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      outline: 1px solid var(--border);
+      transition: transform .22s ease, box-shadow .22s ease, outline-color .22s ease;
+      will-change: transform;
     }
-    .card:hover{ opacity:1 !important; z-index:10; }
+    .card:hover{ opacity: 1 !important; z-index: 10; }
     .card:hover .card-inner{
-      transform:scale(1.07);
-      box-shadow:var(--shadow);
-      outline-color:var(--border2);
+      transform: scale(1.07);
+      box-shadow: var(--shadow);
+      outline-color: var(--border2);
     }
 
     .media{
       width:100%;
       height:100%;
-      object-fit:cover;
+      object-fit: cover;
       display:block;
       background:#000;
-      transform:scale(1.01);
+      transform: scale(1.01);
     }
 
-    /* Icons */
     .typeIcon{
       position:absolute;
       left:10px;
@@ -199,26 +289,23 @@
       justify-content:center;
       background:rgba(0,0,0,.42);
       outline:1px solid rgba(255,255,255,.10);
-      backdrop-filter:blur(10px);
+      backdrop-filter: blur(10px);
       pointer-events:none;
       font-size:14px;
       z-index:5;
     }
 
-    /* Caption */
     .caption{
       position:absolute;
-      left:12px;
-      right:12px;
-      bottom:12px;
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(0,0,0,.46);
-      outline:1px solid rgba(255,255,255,.10);
-      backdrop-filter:blur(10px);
-      transform:translateY(8px);
-      opacity:0;
-      transition:opacity .20s ease, transform .20s ease;
+      left:12px; right:12px; bottom:12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.46);
+      outline: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(10px);
+      transform: translateY(8px);
+      opacity: 0;
+      transition: opacity .20s ease, transform .20s ease;
       pointer-events:none;
       display:flex;
       align-items:center;
@@ -226,23 +313,20 @@
       gap:10px;
       z-index:5;
     }
-    .card:hover .caption{ opacity:1; transform:translateY(0); }
+    .card:hover .caption{ opacity: 1; transform: translateY(0); }
+
     .capText{
       overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      font-size:12px;
-      color:rgba(255,255,255,.92);
-      font-weight:600;
-      letter-spacing:.1px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+      color: rgba(255,255,255,.92);
+      font-weight: 650;
+      letter-spacing: .1px;
     }
-    .capTag{
-      font-size:11px;
-      color:rgba(255,255,255,.70);
-      white-space:nowrap;
-    }
+    .capTag{ font-size: 11px; color: rgba(255,255,255,.70); white-space: nowrap; }
 
-    /* Photo pair (before/after) */
+    /* Pair */
     .pair{
       width:100%;
       height:100%;
@@ -261,10 +345,9 @@
     .divider{
       position:absolute;
       left:50%;
-      top:0;
-      bottom:0;
+      top:0; bottom:0;
       width:1px;
-      background:rgba(255,255,255,.18);
+      background: rgba(255,255,255,.18);
       pointer-events:none;
       z-index:4;
     }
@@ -273,10 +356,10 @@
       top:10px;
       padding:7px 10px;
       border-radius:999px;
-      background:rgba(0,0,0,.46);
-      outline:1px solid rgba(255,255,255,.10);
-      font-size:12px;
-      backdrop-filter:blur(10px);
+      background: rgba(0,0,0,.46);
+      outline: 1px solid rgba(255,255,255,.10);
+      font-size: 12px;
+      backdrop-filter: blur(10px);
       pointer-events:none;
       opacity:.92;
       letter-spacing:.2px;
@@ -285,10 +368,7 @@
     .pairLabel.before{ left:56px; }
     .pairLabel.after{ right:10px; }
 
-    /* =========================
-       AFTER ONLY SHINE (pulse) — NO circles, NO overlay
-       This is ONLY a frame + OUTER glow, both animated.
-       ========================= */
+    /* AFTER pulse (hover-only) — no circles, no overlay */
     .afterShine{
       position:absolute;
       top:10px; bottom:10px;
@@ -305,7 +385,6 @@
       border-radius:14px;
       border:2px solid var(--aStroke1);
       box-shadow: 0 0 0 1px rgba(120,255,210,.12) inset;
-      transition: opacity .18s ease;
       opacity:.85;
     }
     .afterShine::after{
@@ -317,63 +396,52 @@
         0 0 14px var(--aGlow1),
         0 0 28px var(--aGlow3);
       opacity:0;
-      transform:scale(.99);
+      transform: scale(.99);
     }
 
-    .card:hover .afterShine{
-      opacity:1;
-    }
-    .card:hover .afterShine::before{
-      animation: afterStrokePulse 1.25s ease-in-out infinite;
-    }
-    .card:hover .afterShine::after{
-      opacity:1;
-      animation: afterGlowPulse 1.25s ease-in-out infinite;
-    }
+    .card:hover .afterShine{ opacity: 1; }
+    .card:hover .afterShine::before{ animation: afterStrokePulse 1.25s ease-in-out infinite; }
+    .card:hover .afterShine::after { opacity: 1; animation: afterGlowPulse 1.25s ease-in-out infinite; }
 
     @keyframes afterStrokePulse{
       0%,100%{
         border-color: var(--aStroke1);
-        opacity:.72;
+        opacity: .72;
         filter: saturate(1) hue-rotate(0deg);
       }
       50%{
         border-color: var(--aStroke2);
-        opacity:1;
+        opacity: 1;
         filter: saturate(1.18) hue-rotate(14deg);
       }
     }
-
     @keyframes afterGlowPulse{
       0%,100%{
-        transform:scale(.985);
+        transform: scale(.985);
         box-shadow:
           0 0 12px var(--aGlow1),
           0 0 24px var(--aGlow3);
-        opacity:.75;
+        opacity: .75;
       }
       50%{
-        transform:scale(1.01);
+        transform: scale(1.01);
         box-shadow:
           0 0 22px var(--aGlow2),
           0 0 44px var(--aGlow4);
-        opacity:1;
+        opacity: 1;
       }
     }
 
     /* ===== Contact dialog ===== */
     .overlay{
-      position:fixed;
-      inset:0;
+      position:fixed; inset:0;
       display:none;
-      align-items:center;
-      justify-content:center;
+      align-items:center; justify-content:center;
       padding:18px;
       background:rgba(0,0,0,.70);
-      z-index:120;
+      z-index:220;
     }
     .overlay.open{ display:flex; }
-
     .dialog{
       width:min(540px, 96vw);
       border-radius:18px;
@@ -389,19 +457,14 @@
       transition:transform .22s ease, opacity .22s ease;
     }
     .overlay.open .dialog{ transform:translateY(0) scale(1); opacity:1; }
-
     .dialogTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+      display:flex; align-items:center; justify-content:space-between;
       padding:12px 12px;
       background:rgba(255,255,255,.03);
     }
     .dialogTop b{ font-size:13px; opacity:.92; }
-
     .xbtn{
-      border:0;
-      cursor:pointer;
+      border:0; cursor:pointer;
       padding:8px 10px;
       border-radius:12px;
       background:rgba(255,255,255,.10);
@@ -411,18 +474,10 @@
     }
     .xbtn:hover{ transform:translateY(-1px); background:rgba(255,255,255,.14); }
     .xbtn:active{ transform:translateY(0) scale(.99); }
-
     .dialogBody{ padding:16px 14px 14px; }
-    .sub{
-      font-size:12px;
-      color:rgba(255,255,255,.70);
-      margin:0;
-      line-height:1.35;
-    }
+    .sub{ font-size:12px; color:rgba(255,255,255,.70); margin:0; line-height:1.35; }
     .emailBox{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+      display:flex; align-items:center; justify-content:space-between;
       gap:10px;
       padding:12px 12px;
       border-radius:14px;
@@ -431,7 +486,7 @@
       margin-top:10px;
     }
     .email{
-      font-weight:600;
+      font-weight:650;
       letter-spacing:.2px;
       font-size:13px;
       color:rgba(255,255,255,.92);
@@ -440,10 +495,8 @@
       white-space:nowrap;
     }
     .rowBtns{ display:flex; gap:8px; align-items:center; }
-
     .copyBtn, .mailBtn{
-      border:0;
-      cursor:pointer;
+      border:0; cursor:pointer;
       padding:10px 12px;
       border-radius:12px;
       background:rgba(255,255,255,.12);
@@ -464,8 +517,7 @@
 
     .toast{
       position:fixed;
-      left:50%;
-      bottom:22px;
+      left:50%; bottom:22px;
       transform:translateX(-50%) translateY(10px);
       opacity:0;
       padding:10px 12px;
@@ -476,7 +528,7 @@
       font-size:12px;
       backdrop-filter:blur(10px);
       transition:opacity .18s ease, transform .18s ease;
-      z-index:140;
+      z-index:240;
       pointer-events:none;
     }
     .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
@@ -487,10 +539,9 @@
       background:rgba(0,0,0,.74);
       padding:18px;
       align-items:center; justify-content:center;
-      z-index:130;
+      z-index:230;
     }
     .modal.open{ display:flex; }
-
     .modal-inner{
       width:min(1100px, 96vw);
       background:rgba(15,15,18,.96);
@@ -503,7 +554,6 @@
       transition:transform .20s ease, opacity .20s ease;
     }
     .modal.open .modal-inner{ transform:translateY(0) scale(1); opacity:1; }
-
     .modal-top{
       display:flex; align-items:center; justify-content:space-between;
       padding:10px 12px;
@@ -546,8 +596,6 @@
       background:#000;
       display:block;
     }
-
-    /* viewer pair */
     .viewerPair{
       width:100%;
       display:grid;
@@ -573,8 +621,6 @@
       pointer-events:none;
       z-index:2;
     }
-
-    /* Viewer AFTER pulse (always on) */
     .viewerAfterShine{
       position:absolute;
       top:14px; bottom:14px;
@@ -603,40 +649,63 @@
     }
 
     /* Responsive */
-    @media (max-width:820px){
-      .actions{ min-width:unset; }
-      .title{ font-size:24px; }
-      .grid{ grid-template-columns:1fr; }
-      .card{ height:240px; }
-      .card:hover .card-inner{ transform:scale(1.04); }
+    @media (max-width: 980px){
+      .title{ font-size: 30px; }
+      .actions{ min-width: unset; }
+    }
+    @media (max-width: 820px){
+      .wrap{ padding: 0 14px 70px; }
+      .headerCard{ padding: 12px 12px 10px; border-radius: 16px; }
+
+      .title{ font-size: 26px; }
+      .actions{ gap:8px; }
+
+      .grid{ grid-template-columns: 1fr; }
+      .card{ height: 245px; }
+      .card:hover .card-inner{ transform: scale(1.04); }
 
       .viewerPair{ grid-template-columns:1fr; }
       .viewerPair img{ height:auto; max-height:78vh; }
       .viewerDivider, .viewerAfterShine{ display:none; }
       .pairLabel.before{ left:10px; top:52px; }
+      .filters{ gap:8px; }
     }
+
+    /* make sure content doesn't hide under sticky on tiny screens */
+    .contentTopPad{ padding-top: 14px; }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div style="width:260px;"></div>
-      <div class="title">Test portfolio</div>
-      <div class="actions">
-        <button class="btn" id="contactBtn">✉️ Contact me</button>
-        <button class="btn" id="soundBtn" title="Uključi UI zvuk (hover/klik)">
-          🔊 <span id="soundLabel">Sound OFF</span>
-        </button>
+  <!-- Sticky header -->
+  <div class="sticky">
+    <div class="headerCard">
+      <div class="top">
+        <div style="width:260px;"></div>
+
+        <div class="titleWrap">
+          <div class="title">Test portfolio</div>
+          <div class="marker"></div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="contactBtn">✉️ Contact me</button>
+          <button class="btn" id="soundBtn" title="Uključi UI zvuk (hover/klik)">
+            🔊 <span id="soundLabel">Sound OFF</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="chip active" data-filter="all">● All</button>
+        <button class="chip" data-filter="video">▶ Video</button>
+        <button class="chip" data-filter="photo">▢ Photo</button>
       </div>
     </div>
+  </div>
 
-    <div class="filters" id="filters">
-      <button class="chip active" data-filter="all">All</button>
-      <button class="chip" data-filter="video">Video</button>
-      <button class="chip" data-filter="photo">Photo</button>
-    </div>
-
+  <div class="wrap contentTopPad">
+    <div class="spacer"></div>
     <div class="grid" id="grid"></div>
   </div>
 
@@ -653,7 +722,7 @@
           <div class="email" id="emailText">primjer@nestobzv.com</div>
           <div class="rowBtns">
             <button class="copyBtn" id="copyBtn">Copy</button>
-            <a class="mailBtn" id="mailBtn" href="mailto:primjer@nestobzv.com">Open</a>
+            <a class="mailBtn" href="mailto:primjer@nestobzv.com">Open</a>
           </div>
         </div>
       </div>
@@ -675,27 +744,25 @@
 
   <script>
     // ==========================
-    // 1) UPISI SVOJE FAJLOVE OVDJE
-    // type:
-    //   - "video" (src)
-    //   - "photo" (src)
-    //   - "pair"  (before, after)
-    // caption: placeholder text
+    // UPISI SVOJE FAJLOVE OVDJE
+    // Folderi:
+    //   /videos
+    //   /images
     // ==========================
     const ITEMS = [
       // Videos
-      { type: "video", src: "videos/v1.mp4", caption: "Primjer blabla" },
-      { type: "video", src: "videos/v2.mp4", caption: "Primjer blabla" },
-      { type: "video", src: "videos/v3.mp4", caption: "Primjer blabla" },
-      { type: "video", src: "videos/v4.mp4", caption: "Primjer blabla" },
-      { type: "video", src: "videos/v5.mp4", caption: "Primjer blabla" },
+      { type: "video", src: "./videos/v1.mp4", caption: "Primjer blabla" },
+      { type: "video", src: "./videos/v2.mp4", caption: "Primjer blabla" },
+      { type: "video", src: "./videos/v3.mp4", caption: "Primjer blabla" },
+      { type: "video", src: "./videos/v4.mp4", caption: "Primjer blabla" },
+      { type: "video", src: "./videos/v5.mp4", caption: "Primjer blabla" },
 
       // Photos (single)
-      { type: "photo", src: "images/p2.png", caption: "Primjer blabla" },
+      { type: "photo", src: "./images/p2.png", caption: "Primjer blabla" },
 
-      // Photo pairs (Before/After)
-      { type: "pair", before: "images/p1_before.png", after: "images/p1_after.png", caption: "Primjer blabla" },
-      { type: "pair", before: "images/p3_before.png", after: "images/p3_after.png", caption: "Primjer blabla" },
+      // Before/After pairs
+      { type: "pair", before: "./images/p1_before.png", after: "./images/p1_after.png", caption: "Primjer blabla" },
+      { type: "pair", before: "./images/p3_before.png", after: "./images/p3_after.png", caption: "Primjer blabla" },
     ];
 
     // ==========================
@@ -830,10 +897,10 @@
     filterWrap.addEventListener("click", (e) => {
       const btn = e.target.closest(".chip");
       if(!btn) return;
-      currentFilter = btn.dataset.filter;
 
-      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-      btn.classList.add("active");
+      currentFilter = btn.dataset.filter;
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("active","bump"));
+      btn.classList.add("active","bump");
 
       softClick();
       render();
